@@ -340,5 +340,6 @@ func initHandlers() {
     http.HandleFunc("/api/", api)
     http.HandleFunc("/img/", images)
     http.HandleFunc("/models/", models)
+    http.HandleFunc("/any/", servAny)
     //http.HandleFunc("/articles", articles)
 }

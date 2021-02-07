@@ -393,6 +393,13 @@ func models(rw http.ResponseWriter, req *http.Request) {
     freeCompression(&w, zip)
 }
 
+func servAny(rw http.ResponseWriter, req *http.Request) {
+
+    if !servFile(&rw, req, req.URL.Path[1:]) {
+        servErr(&rw, http.StatusNotFound)
+    }
+}
+
 // serve any type of file (folders are prohibited)
 func servFile(rw *http.ResponseWriter, req *http.Request, path string) bool {
     file, err := os.Open(path)
@@ -497,6 +504,8 @@ func getContentType(path string, target int) string {
         switch (extension) {
         case "mpeg":
             return "video/mpeg"
+        case "mp4":
+            return "video/mp4"
         case "webm":
             return "video/webm"
         case "avi":
