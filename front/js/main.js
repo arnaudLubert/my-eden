@@ -22,14 +22,20 @@ let flowerCounter = 0;
 scene.enableStats(false);
 
 let arObject = new Node();
+let flowerPrefab = new Node();
 arObject.visible = false;
+flowerPrefab.visible = false;
 scene.addNode(arObject);
+scene.addNode(flowerPrefab);
 
-let flower = new Gltf2Node({url: '/models/gltf/random/cylinder.glb'});
-flower.scale = [0.02, 0.02, 0.1]; // custom scale
-flower.rotation[0] = -0.7;
+let flower = new Gltf2Node({url: '/models/gltf/sunflower/sunflower.gltf'});
+let stick = new Gltf2Node({url: '/models/gltf/random/cylinder.glb'});
+stick.scale = [0.02, 0.02, 0.1]; // custom scale
+stick.rotation[0] = -0.7;
 
-arObject.addNode(flower);
+
+arObject.addNode(stick);
+flowerPrefab.addNode(flower);
 
 let reticle = new Gltf2Node({url: '/models/gltf/reticle/reticle.gltf'});
 reticle.visible = false;
@@ -40,9 +46,11 @@ scene.addNode(reticle);
 let shadow = new DropShadowNode();
 vec3.set(shadow.scale, 0.15, 0.15, 0.15);
 arObject.addNode(shadow);
+flowerPrefab.addNode(shadow);
 
-const MAX_FLOWERS = 4;
-let flowers = [];
+const MAX_CORNERS = 4;
+let corners = [];
+let garden = [];
 
 // Ensure the background is transparent for AR.
 scene.clear = false;
@@ -151,43 +159,62 @@ function addARObjectAt(matrix) {
     newFlower.matrix = matrix;
     scene.addNode(newFlower);
 
-    if (flowers.length >= MAX_FLOWERS) {
-     // let oldFlower = flowers.shift();
-     scene.removeNode(flowers[flowerCounter]);
-     flowers[flowerCounter] = newFlower;
+    if (corners.length >= MAX_CORNERS) {
+     // let oldFlower = corners.shift();
+     scene.removeNode(corners[flowerCounter]);
+     corners[flowerCounter] = newFlower;
       flowerCounter++;
 
-      if (flowerCounter === MAX_FLOWERS)
+      if (flowerCounter === MAX_CORNERS)
         flowerCounter = 0;
   } else
-    flowers.push(newFlower);
-  globalMat = newFlower;
-
-  if (flowers.length > 1) {
-     // const distance = Math.sqrt(Math.pow(flowers[flowers.length - 2].matrix[12] - flowers[flowers.length - 1].matrix[12], 2) + Math.pow(flowers[flowers.length - 2].matrix[14] - flowers[flowers.length - 1].matrix[14], 2));
-    //  console.log(distance);
-  }
+    corners.push(newFlower);
+//  globalMat = newFlower;
+/*
+  if (corners.length > 1) {
+      const distance = Math.sqrt(Math.pow(corners[selector.length - 2].matrix[12] - corners[selector.length - 1].matrix[12], 2) + Math.pow(corners[selector.length - 2].matrix[14] - corners[selector.length - 1].matrix[14], 2));
+      console.log(distance);
+}*/
  //console.log(globalMat.matrix);
 
- if (flowers.length == MAX_FLOWERS) {
-     const corners = [0, 1, 2, 3];
-     const ab = Math.sqrt(Math.pow(flowers[corners[0]].matrix[12] - flowers[corners[1]].matrix[12], 2) + Math.pow(flowers[corners[0]].matrix[14] - flowers[corners[1]].matrix[14], 2));
-     const bc = Math.sqrt(Math.pow(flowers[corners[1]].matrix[12] - flowers[corners[2]].matrix[12], 2) + Math.pow(flowers[corners[1]].matrix[14] - flowers[corners[2]].matrix[14], 2));
-     const cd = Math.sqrt(Math.pow(flowers[corners[2]].matrix[12] - flowers[corners[3]].matrix[12], 2) + Math.pow(flowers[corners[2]].matrix[14] - flowers[corners[3]].matrix[14], 2));
-     const ad = Math.sqrt(Math.pow(flowers[corners[3]].matrix[12] - flowers[corners[0]].matrix[12], 2) + Math.pow(flowers[corners[3]].matrix[14] - flowers[corners[0]].matrix[14], 2));
+ if (corners.length == MAX_CORNERS) {
+     const selector = [0, 1, 2, 3];
+     const ab = Math.sqrt(Math.pow(corners[selector[0]].matrix[12] - corners[selector[1]].matrix[12], 2) + Math.pow(corners[selector[0]].matrix[14] - corners[selector[1]].matrix[14], 2));
+     const bc = Math.sqrt(Math.pow(corners[selector[1]].matrix[12] - corners[selector[2]].matrix[12], 2) + Math.pow(corners[selector[1]].matrix[14] - corners[selector[2]].matrix[14], 2));
+     const cd = Math.sqrt(Math.pow(corners[selector[2]].matrix[12] - corners[selector[3]].matrix[12], 2) + Math.pow(corners[selector[2]].matrix[14] - corners[selector[3]].matrix[14], 2));
+     const ad = Math.sqrt(Math.pow(corners[selector[3]].matrix[12] - corners[selector[0]].matrix[12], 2) + Math.pow(corners[selector[3]].matrix[14] - corners[selector[0]].matrix[14], 2));
 
      const angleA = find_angle(
-         {x: flowers[corners[1]].matrix[12], y: flowers[corners[1]].matrix[14]},
-         {x: flowers[corners[3]].matrix[12], y: flowers[corners[3]].matrix[14]},
-         {x: flowers[corners[0]].matrix[12], y: flowers[corners[0]].matrix[14]});
+         {x: corners[selector[1]].matrix[12], y: corners[selector[1]].matrix[14]},
+         {x: corners[selector[3]].matrix[12], y: corners[selector[3]].matrix[14]},
+         {x: corners[selector[0]].matrix[12], y: corners[selector[0]].matrix[14]});
      const angleC = find_angle(
-         {x: flowers[corners[3]].matrix[12], y: flowers[corners[3]].matrix[14]},
-         {x: flowers[corners[1]].matrix[12], y: flowers[corners[1]].matrix[14]},
-         {x: flowers[corners[2]].matrix[12], y: flowers[corners[2]].matrix[14]});
+         {x: corners[selector[3]].matrix[12], y: corners[selector[3]].matrix[14]},
+         {x: corners[selector[1]].matrix[12], y: corners[selector[1]].matrix[14]},
+         {x: corners[selector[2]].matrix[12], y: corners[selector[2]].matrix[14]});
 
 //    console.log("angles:",angleA * 180 / Math.PI, angleC * 180 / Math.PI);
     const surface = 0.5 * ab * ad * Math.sin(angleA) + 0.5 * bc * cd * Math.sin(angleC); // m2
-    console.log("surface:", Math.round(surface * 100) / 100, 'm2');
+//    console.log("surface:", Math.round(surface * 100) / 100, 'm2');
+    document.getElementById('surface').children[0].textContent = 'Surface: ' + (Math.round(surface * 100) / 100) + ' m2';
+
+    matrix[14] = corners[selector[0]].matrix[14];
+    console.log(corners[selector[2]].matrix[14], matrix[14]);
+
+    while (matrix[14] < corners[selector[2]].matrix[14]) {
+        matrix[12] = corners[selector[0]].matrix[12];
+        while (matrix[12] < corners[selector[1]].matrix[12]) {
+            newFlower = flowerPrefab.clone();
+            newFlower.visible = true;
+            newFlower.matrix = matrix;
+            garden.push(newFlower);
+            scene.addNode(newFlower);
+            matrix[12] += 0.3;
+        }
+        matrix[14] += 0.3;
+    }
+//corners[selector[0]].matrix[12] + 0.2;
+//corners[selector[0]].matrix[14] + 0.2;
  }
 }
 
@@ -203,6 +230,7 @@ function find_angle(p0,p1,c) {
 
 let rayOrigin = vec3.create();
 let rayDirection = vec3.create();
+
 function onSelect(event) {
   if (reticle.visible) {
     // The reticle should already be positioned at the latest hit point,
