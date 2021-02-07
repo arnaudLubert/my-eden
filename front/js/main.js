@@ -17,13 +17,17 @@ let xrHitTestSource = null;
 let gl = null;
 let renderer = null;
 let scene = new Scene();
+let flowerCounter = 0;
 scene.enableStats(false);
 
 let arObject = new Node();
 arObject.visible = false;
 scene.addNode(arObject);
 
-let flower = new Gltf2Node({url: '/models/gltf/sunflower/sunflower.gltf'});
+let flower = new Gltf2Node({url: '/models/gltf/random/cylinder.glb'});
+flower.scale = [0.02, 0.02, 0.1]; // custom scale
+flower.rotation[0] = -0.7;
+
 arObject.addNode(flower);
 
 let reticle = new Gltf2Node({url: '/models/gltf/reticle/reticle.gltf'});
@@ -36,7 +40,7 @@ let shadow = new DropShadowNode();
 vec3.set(shadow.scale, 0.15, 0.15, 0.15);
 arObject.addNode(shadow);
 
-const MAX_FLOWERS = 30;
+const MAX_FLOWERS = 4;
 let flowers = [];
 
 // Ensure the background is transparent for AR.
@@ -46,7 +50,7 @@ function initXR() {
   xrButton = new WebXRButton({
     onRequestSession: onRequestSession,
     onEndSession: onEndSession,
-    textEnterXRTitle: "BEGIN",
+    textEnterXRTitle: "CREATE MY EDEN",
     textXRNotFoundTitle: "AR NOT FOUND",
     textExitXRTitle: "EXIT  AR",
   });
@@ -115,22 +119,59 @@ function onSessionEnded(event) {
 // Adds a new object to the scene at the
 // specificed transform.
 function addARObjectAt(matrix) {
-  let newFlower = arObject.clone();
-  newFlower.visible = true;
-  newFlower.matrix = matrix;
-  scene.addNode(newFlower);
+    let newFlower = arObject.clone();
+    newFlower.visible = true;
+    newFlower.matrix = matrix;
+    scene.addNode(newFlower);
 
-  flowers.push(newFlower);
+    if (flowers.length >= MAX_FLOWERS) {
+     // let oldFlower = flowers.shift();
+     scene.removeNode(flowers[flowerCounter]);
+     flowers[flowerCounter] = newFlower;
+      flowerCounter++;
+
+      if (flowerCounter === MAX_FLOWERS)
+        flowerCounter = 0;
+  } else
+    flowers.push(newFlower);
   globalMat = newFlower;
- console.log(globalMat.matrix);
 
-  // For performance reasons if we add too many objects start
-  // removing the oldest ones to keep the scene complexity
-  // from growing too much.
-  if (flowers.length > MAX_FLOWERS) {
-    let oldFlower = flowers.shift();
-    scene.removeNode(oldFlower);
+  if (flowers.length > 1) {
+     // const distance = Math.sqrt(Math.pow(flowers[flowers.length - 2].matrix[12] - flowers[flowers.length - 1].matrix[12], 2) + Math.pow(flowers[flowers.length - 2].matrix[14] - flowers[flowers.length - 1].matrix[14], 2));
+    //  console.log(distance);
   }
+ //console.log(globalMat.matrix);
+
+ if (flowers.length == MAX_FLOWERS) {
+     const corners = [0, 1, 2, 3];
+     const ab = Math.sqrt(Math.pow(flowers[corners[0]].matrix[12] - flowers[corners[1]].matrix[12], 2) + Math.pow(flowers[corners[0]].matrix[14] - flowers[corners[1]].matrix[14], 2));
+     const bc = Math.sqrt(Math.pow(flowers[corners[1]].matrix[12] - flowers[corners[2]].matrix[12], 2) + Math.pow(flowers[corners[1]].matrix[14] - flowers[corners[2]].matrix[14], 2));
+     const cd = Math.sqrt(Math.pow(flowers[corners[2]].matrix[12] - flowers[corners[3]].matrix[12], 2) + Math.pow(flowers[corners[2]].matrix[14] - flowers[corners[3]].matrix[14], 2));
+     const ad = Math.sqrt(Math.pow(flowers[corners[3]].matrix[12] - flowers[corners[0]].matrix[12], 2) + Math.pow(flowers[corners[3]].matrix[14] - flowers[corners[0]].matrix[14], 2));
+
+     const angleA = find_angle(
+         {x: flowers[corners[1]].matrix[12], y: flowers[corners[1]].matrix[14]},
+         {x: flowers[corners[3]].matrix[12], y: flowers[corners[3]].matrix[14]},
+         {x: flowers[corners[0]].matrix[12], y: flowers[corners[0]].matrix[14]});
+     const angleC = find_angle(
+         {x: flowers[corners[3]].matrix[12], y: flowers[corners[3]].matrix[14]},
+         {x: flowers[corners[1]].matrix[12], y: flowers[corners[1]].matrix[14]},
+         {x: flowers[corners[2]].matrix[12], y: flowers[corners[2]].matrix[14]});
+
+//    console.log("angles:",angleA * 180 / Math.PI, angleC * 180 / Math.PI);
+    const surface = 0.5 * ab * ad * Math.sin(angleA) + 0.5 * bc * cd * Math.sin(angleC); // m2
+    console.log("surface:", Math.round(surface * 100) / 100, 'm2');
+ }
+}
+
+function find_angle(p0,p1,c) {
+    var p0c = Math.sqrt(Math.pow(c.x-p0.x,2)+
+                        Math.pow(c.y-p0.y,2)); // p0->c (b)
+    var p1c = Math.sqrt(Math.pow(c.x-p1.x,2)+
+                        Math.pow(c.y-p1.y,2)); // p1->c (a)
+    var p0p1 = Math.sqrt(Math.pow(p1.x-p0.x,2)+
+                         Math.pow(p1.y-p0.y,2)); // p0->p1 (c)
+    return Math.acos((p1c*p1c+p0c*p0c-p0p1*p0p1)/(2*p1c*p0c));
 }
 
 let rayOrigin = vec3.create();
