@@ -98,12 +98,12 @@ func main() {
         certManager := autocert.Manager{
     		Prompt: autocert.AcceptTOS,
     		Cache:  autocert.DirCache("/certificates"),
-            HostPolicy: autocert.HostWhitelist(Domain, "www." + Domain),
+            HostPolicy: autocert.HostWhitelist(Domain),
             Email: os.Getenv("MAINTENER_EMAIL"),
         //    RenewBefore: time.Hour * 24 * 30 = default
     	}
 
-        cfg := &tls.Config{GetCertificate: certManager.GetCertificate, NextProtos: []string{"http/1.1"}, ServerName: "signatix" }
+        cfg := &tls.Config{GetCertificate: certManager.GetCertificate, NextProtos: []string{"http/1.1"}, ServerName: "my-eden" }
         server = &http.Server{
             Addr: ":https",
             Handler: nil, // default http mux

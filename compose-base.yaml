@@ -22,6 +22,7 @@ services:
         cap_add:
             - SYS_BOOT
         volumes:
+            - ${RELATIVE_PATH}/front:/root/website_bridge
             - ${RELATIVE_PATH}/containers_logs/golang:/logs
             - ${RELATIVE_PATH}/containers_data:/data
             - ${RELATIVE_PATH}/containers_backups/mysql:/backups-sql
@@ -33,10 +34,10 @@ services:
         environment:
             - URL_SCHEME=${URL_SCHEME}
             - DEBUG=${DEBUG}
-        links:
-            - mysql
-        depends_on:
-            - mysql
+#        links:
+#            - mysql
+#        depends_on:
+#            - mysql
         expose:
             - "80"
             - "443"
