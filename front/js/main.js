@@ -4,6 +4,7 @@ import {Renderer, createWebGLContext} from '/js/render/core/renderer.js';
 import {Node} from '/js/render/core/node.js';
 import {Gltf2Node} from '/js/render/nodes/gltf2.js';
 import {DropShadowNode} from '/js/render/nodes/drop-shadow.js';
+import {SevenSegmentText} from '/js/render/nodes/seven-segment-text.js';
 import {vec3} from '/js/render/math/gl-matrix.js';
 import {Ray} from '/js/render/math/ray.js';
 
@@ -81,9 +82,35 @@ function onSessionStarted(session) {
       xrCompatible: true
     });
 
+    document.body.appendChild(gl.canvas);
+
+    function onResize() {
+      gl.canvas.width = gl.canvas.clientWidth * window.devicePixelRatio;
+      gl.canvas.height = gl.canvas.clientHeight * window.devicePixelRatio;
+    }
+    window.addEventListener('resize', onResize);
+    onResize();
+
     renderer = new Renderer(gl);
 
+// GUI
+/*
+    let uiText = new SevenSegmentText();
+    // Hard coded because it doesn't change:
+    // Scale by 0.075 in X and Y
+    // Translate into upper left corner w/ z = 0.02
+    uiText.matrix = new Float32Array([
+        0.075, 0, 0, 0,
+        0, 0.075, 0, 0,
+        0, 0, 1, 0,
+        -0.3625, 0.3625, 0.02, 1,
+    ]);
+    uiText.onRendererChanged(renderer);
+    uiText.text = "1234556FPS";
+    scene.addNode(uiText);
+*/
     scene.setRenderer(renderer);
+
   }
 
   session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl) });

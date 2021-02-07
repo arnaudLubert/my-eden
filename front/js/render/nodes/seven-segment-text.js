@@ -174,11 +174,12 @@ export class SevenSegmentText extends Node {
   }
 
   set text(value) {
+      console.log(value);
     this._text = value;
 
     let i = 0;
     let charPrimitive = null;
-    for (; i < value.length; ++i) {
+    for (; i < value.length; ++i) {;
       if (value[i] in this._charPrimitives) {
         charPrimitive = this._charPrimitives[value[i]];
       } else {
