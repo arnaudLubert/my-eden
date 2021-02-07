@@ -1,0 +1,147 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.0.5eb040c7)"
+    },
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 2450,
+            "type": "VEC3",
+            "max": [
+                -1.9512959718704224,
+                1.645334005355835,
+                0.9367849826812744
+            ],
+            "min": [
+                -4.8119049072265629,
+                -0.06551499664783478,
+                -1.9313559532165528
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 2450,
+            "type": "VEC3",
+            "max": [
+                0.998890221118927,
+                1.0,
+                0.9943549036979675
+            ],
+            "min": [
+                -0.9942964315414429,
+                -1.0,
+                -0.999369740486145
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 14400,
+            "type": "SCALAR",
+            "max": [
+                2449
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 116400,
+            "uri": "result.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 29400,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 29400,
+            "byteLength": 29400,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 58800,
+            "byteLength": 57600,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "DefaultMaterial",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        },
+        {
+            "name": "broun",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "Squade_Plane.004_broun",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 1,
+                    "indices": 2,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "input.obj",
+            "children": [
+                1,
+                2
+            ]
+        },
+        {
+            "name": "Squade_Plane.004"
+        },
+        {
+            "name": "Squade_Plane.004_broun",
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

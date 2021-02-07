@@ -1,0 +1,165 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.0.5eb040c7)"
+    },
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 630,
+            "type": "VEC3",
+            "max": [
+                0.7141109704971314,
+                1.612962007522583,
+                0.22339700162410737
+            ],
+            "min": [
+                -0.7331079840660095,
+                0.18332000076770783,
+                -0.25411099195480349
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 630,
+            "type": "VEC3",
+            "max": [
+                0.9990432262420654,
+                0.9617772102355957,
+                0.9994487762451172
+            ],
+            "min": [
+                -0.9976764917373657,
+                -0.9909952282905579,
+                -0.9972028732299805
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 630,
+            "type": "VEC2",
+            "max": [
+                0.9968169927597046,
+                0.9320549964904785
+            ],
+            "min": [
+                0.009220000356435776,
+                0.08550399541854859
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 3552,
+            "type": "SCALAR",
+            "max": [
+                629
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 34368,
+            "uri": "result.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 7560,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 7560,
+            "byteLength": 7560,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 15120,
+            "byteLength": 5040,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 20160,
+            "byteLength": 14208,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "DefaultMaterial",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        },
+        {
+            "name": "almondKernels:shellSG",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ],
+                "metallicFactor": 0.0
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "pumpkinseed:pumpkinsd",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 1,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "input.obj",
+            "children": [
+                1
+            ]
+        },
+        {
+            "name": "pumpkinseed:pumpkinsd",
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}
