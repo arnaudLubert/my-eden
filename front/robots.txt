@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin
+Disallow: /api
+Disallow: /envoi-fichiers
+Disallow: /informations-commande
+Disallow: /fichiers
+Disallow: /facture
+Disallow: /atelier
+Disallow: /export
+Disallow: /devis
+Sitemap: https://signatix.fr/sitemap.xml

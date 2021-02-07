@@ -1,0 +1,6 @@
+.DS_Store
+env.config
+/containers_logs/golang/*
+/containers_data/*
+/containers_backups/*
+server

@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+    mysql:
+        ports:
+            - "${LOCAL_IP}:${MYSQL_PORT}:3306"
